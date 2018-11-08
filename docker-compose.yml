@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+
+  php:
+    image: registry.proserve.nl/${GITLAB_PROJECT_PATH}/php:${IMAGE_TAG:-latest}
+
+  nginx:
+    image: registry.proserve.nl/${GITLAB_PROJECT_PATH}/nginx:${IMAGE_TAG:-latest}

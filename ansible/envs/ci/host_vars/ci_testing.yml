@@ -1,0 +1,7 @@
+---
+envfiles_templates:
+  - { src: "env-laravel.j2", dest: ".env-laravel" }
+  - { src: "auth.json.j2", dest: "auth.json" }
+
+db_app_username: root
+db_app_password: ""

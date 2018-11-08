@@ -1,0 +1,11 @@
+[ci]
+ci_testing                      ansible_connection=local
+ci_build_meta                   ansible_connection=local
+ci_deploy_acc                   ansible_connection=local
+ci_build_images                 ansible_connection=local
+
+[local_testing]
+local_testing_acc               ansible_connection=local
+
+[ci:vars]
+ansible_python_interpreter=/usr/bin/python3

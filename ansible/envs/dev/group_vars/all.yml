@@ -1,0 +1,20 @@
+---
+laravel_app_env: local
+laravel_app_key: "base64:KpD+6O5tB+JQ1zDWAPwDnPGc6nGgo6ff077x3EbPS1I="
+laravel_app_debug: "true"
+laravel_app_host: ticketbeast.test
+laravel_app_url: "http://{{ laravel_app_host }}"
+
+laravel_log_channel: stack
+
+db_app_host: mysql
+db_app_username: ticketbeast
+db_app_password: secret
+db_app_database: ticketbeast
+db_app_root_password: secret
+db_app_external_port: 3316
+
+envfiles_templates:
+  - { src: "auth.json.j2", dest: "auth.json" }
+  - { src: "env.j2", dest: ".env" }
+  - { src: "env-laravel.j2", dest: ".env-laravel" }

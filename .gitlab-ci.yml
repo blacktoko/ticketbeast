@@ -1,0 +1,161 @@
+image: registry.proserve.nl/dev/docker/docker-ci:0.1.9
+
+services:
+- docker:dind
+
+stages:
+- setup
+- codestyle
+- test
+- build
+
+variables:
+  ANSIBLE_DIR: ${CI_PROJECT_DIR}/ansible
+  DOCKER_HOST: "tcp://127.0.0.1:2375"
+
+before_script:
+- echo ${ANSIBLE_VAULT_PASSWORD} > ${ANSIBLE_DIR}/.vault_pass.txt
+
+.cache:
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    paths:
+    - ./src/vendor
+
+########################################################################################################################
+#
+#  SETUP STAGE
+#
+########################################################################################################################
+
+setup:
+  stage: setup
+  extends: .cache
+  image: registry.proserve.nl/dev/docker/php72-fpm/builder:latest
+  script:
+  - ansible-playbook ${ANSIBLE_DIR}/play/* --syntax-check
+  - ansible-playbook ${ANSIBLE_DIR}/play/ci_testing.yml -i ${ANSIBLE_DIR}/envs/ci
+  - cp auth.json ./src/auth.json
+  - cd ./src
+  - php -v
+  - which php
+  - composer --version
+  - which composer
+  - composer check-platform-reqs
+  - composer install --no-progress --prefer-dist --no-ansi
+
+########################################################################################################################
+#
+#  CODESTYLE STAGE
+#
+########################################################################################################################
+
+.codestyle_setup:
+  image: registry.proserve.nl/dev/docker/php72-fpm/builder:latest
+  variables:
+    COMPOSER_NO_INTERACTION: 1
+  before_script:
+  - cd ./src
+
+phplint:
+  stage: codestyle
+  extends: .codestyle_setup
+  script:
+  - phplint --exclude vendor --no-cache --no-ansi --no-interaction .
+
+phploc:
+  stage: codestyle
+  extends: .codestyle_setup
+  script:
+  - phploc --count-tests --exclude vendor --no-interaction --no-ansi .
+
+phpcpd:
+  stage: codestyle
+  extends: .codestyle_setup
+  script:
+  - phpcpd --exclude vendor --no-interaction --no-ansi .
+
+phpcs:
+  stage: codestyle
+  extends: .codestyle_setup
+  script:
+  - phpcs --standard=/var/opt/php_codesniffer/standards/laravel.xml
+
+security-checker:
+  stage: codestyle
+  extends: .codestyle_setup
+  script:
+  - security-checker security:check --no-ansi --no-interaction
+
+########################################################################################################################
+#
+#  TEST STAGE
+#
+########################################################################################################################
+
+.test_setup:
+  extends: .cache
+  image: registry.proserve.nl/dev/docker/php72-fpm/builder:latest
+  variables:
+    COMPOSER_NO_INTERACTION: 1
+  before_script:
+  - echo ${ANSIBLE_VAULT_PASSWORD} > ${ANSIBLE_DIR}/.vault_pass.txt
+  - ansible-playbook ${ANSIBLE_DIR}/play/ci_testing.yml -i ${ANSIBLE_DIR}/envs/ci
+  - cp .env-laravel ./src/.env
+  - cp auth.json ./src/auth.json
+  - cd ./src
+
+deps-check:
+  stage: test
+  extends: .test_setup
+  allow_failure: true
+  script:
+  - composer install --no-progress --prefer-dist --no-ansi
+  - composer outdated --no-ansi
+  - composer outdated --minor-only --strict --direct --no-ansi
+  only:
+  - branches
+
+phpunit:
+  stage: test
+  extends: .test_setup
+  services:
+  - name: mariadb:10.3.10-bionic
+  variables:
+    APP_ENV: testing
+    MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    MYSQL_DATABASE: ticketbeast
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+  artifacts:
+    reports:
+      junit: ./src/phpunit_junit_report.xml
+  script:
+  - composer install --no-progress --prefer-dist --no-ansi
+  - php artisan migrate --seed
+  - ./vendor/bin/phpunit --configuration phpunit.xml --testdox --coverage-text --log-junit=phpunit_junit_report.xml  --colors=never
+  only:
+  - branches
+
+########################################################################################################################
+#
+#  BUILD STAGE
+#
+########################################################################################################################
+
+build-feature:
+  stage: build
+  artifacts:
+    name: "$CI_JOB_STAGE-$CI_COMMIT_REF_NAME"
+    paths:
+    - build_meta.json
+  before_script:
+  - echo ${ANSIBLE_VAULT_PASSWORD} > ${ANSIBLE_DIR}/.vault_pass.txt
+  - ansible-playbook ${ANSIBLE_DIR}/play/ci_build_images.yml -i ${ANSIBLE_DIR}/envs/ci
+  script:
+  - export IMAGE_TAG="$(date +'Y%y-W%V')_${CI_COMMIT_REF_SLUG}"
+  - rm -f docker-compose.yml docker-compose.override.yml && mv docker-compose.build.yml docker-compose.yml
+  - docker-compose build
+  - docker-compose push
+  - ansible-playbook ${ANSIBLE_DIR}/play/ci_build_meta.yml -i ${ANSIBLE_DIR}/envs/ci
+  only:
+  - /^feature\/.*$/

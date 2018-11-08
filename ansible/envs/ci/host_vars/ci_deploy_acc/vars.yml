@@ -1,0 +1,20 @@
+---
+laravel_app_env: acceptance
+laravel_app_key: "{{ vault_laravel_app_key }}"
+laravel_app_debug: "true"
+laravel_app_host: "{{ lookup("env", "CI_ENVIRONMENT_URL") | default("ticketbeast.83.96.236.55.nip.io", true) }}"
+laravel_app_url: "http://{{ laravel_app_host }}"
+
+laravel_log_channel: stack
+
+db_app_username: "{{ vault_db_app_username }}"
+db_app_password: "{{ vault_db_app_password }}"
+db_app_database: "{{ vault_db_app_database }}"
+db_app_root_password: "{{ vault_db_app_root_password }}"
+
+docker_secrets_dict:
+  APP_KEY: "{{ laravel_app_key }}"
+  DB_DATABASE: "{{ db_app_database }}"
+  DB_USERNAME: "{{ db_app_username }}"
+  DB_PASSWORD: "{{ db_app_password }}"
+  DB_ROOT_PASSWORD: "{{ db_app_root_password }}"

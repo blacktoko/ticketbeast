@@ -1,0 +1,11 @@
+---
+- name: Create build_meta dest dir
+  file:
+    path: "{{ build_meta_dest }}"
+    state: directory
+  when: build_meta_create_dest_dir
+
+- name: Create build_meta.json
+  template:
+    src: build_meta.json.j2
+    dest: "{{ build_meta_dest }}build_meta.json"

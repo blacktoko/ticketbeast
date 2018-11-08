@@ -1,0 +1,21 @@
+---
+- name: Local Ansible Testing
+  hosts: local_testing_acc
+  gather_facts: no
+  vars_files:
+    - ../envs/000_cross_env_vars/vars.yml
+    - ../envs/000_cross_env_vars/vault.yml
+  vars:
+    - envfiles_dest: "./../.test/envfiles"
+    - envfiles_create_dest_dir: true
+    - envfiles_templates_append:
+      - { src: "env-testing.j2", dest: ".env-testing" }
+    - docker_swarm_tls_dir: "./../.test/tls"
+    - docker_secrets_dir: "./../.test/secrets"
+    - build_meta_dest: "./../.test/build"
+    - build_image_tag: "dev_tag_tag"
+  roles:
+    - envfiles
+    - docker_swarm_tls
+    - build_meta
+    - docker_secrets

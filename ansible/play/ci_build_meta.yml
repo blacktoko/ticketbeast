@@ -1,0 +1,13 @@
+---
+- name: CI Build Meta
+  hosts: ci_build_meta
+  gather_facts: no
+  vars_files:
+    - ../envs/000_cross_env_vars/vars.yml
+    - ../envs/000_cross_env_vars/vault.yml
+  pre_tasks:
+    - fail:
+        msg: "ENV variable IMAGE_TAG is not set or empty"
+      when: build_image_tag is undefined or build_image_tag is none or build_image_tag | trim == ""
+  roles:
+    - build_meta

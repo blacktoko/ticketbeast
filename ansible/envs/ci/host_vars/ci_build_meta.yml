@@ -1,0 +1,2 @@
+---
+build_image_tag: "{{ lookup("env", "IMAGE_TAG") }}"

@@ -1,0 +1,41 @@
+APP_NAME="{{ laravel_app_name }}"
+APP_ENV={{ laravel_app_env }}
+APP_KEY=SECRET
+APP_DEBUG={{ laravel_app_debug }}
+APP_HOST={{ laravel_app_host }}
+APP_URL={{ laravel_app_url }}
+
+LOG_CHANNEL={{ laravel_log_channel }}
+
+DB_CONNECTION=mysql
+
+DB_APP_HOST={{ db_app_host }}
+DB_APP_PORT=3306
+DB_APP_DATABASE={{ db_app_database }}
+DB_APP_USERNAME={{ db_app_username }}
+DB_APP_PASSWORD={{ db_app_password }}
+
+BROADCAST_DRIVER=file
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_DRIVER=sendmail
+MAIL_HOST=mail
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+
+PUSHER_APP_ID=
+PUSHER_APP_KEY=
+PUSHER_APP_SECRET=
+PUSHER_APP_CLUSTER=mt1
+
+MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"

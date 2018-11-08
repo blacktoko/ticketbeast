@@ -1,0 +1,11 @@
+---
+envfiles_dest: "./../../"
+envfiles_create_dest_dir: false
+envfiles_force: no
+
+envfiles_templates:
+  - { src: "auth.json.j2", dest: "auth.json" }
+  - { src: "env-laravel.j2", dest: ".env-laravel" }
+  - { src: "env.j2", dest: ".env" }
+
+envfiles_templates_append: []

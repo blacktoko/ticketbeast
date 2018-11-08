@@ -1,0 +1,12 @@
+---
+- name: Create Docker Secrets dest dir
+  file:
+    path: "{{ docker_secrets_dir }}"
+    state: directory
+
+- name: Creating Docker Secrets
+  copy:
+    content: "{{ item.value }}"
+    dest: "{{ docker_secrets_dir }}{{ item.key }}"
+  with_dict: "{{ docker_secrets_dict }}"
+  no_log: true

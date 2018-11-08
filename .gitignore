@@ -1,0 +1,9 @@
+/.env
+/.env-laravel
+/auth.json
+/dev
+
+/ansible/.vault_pass.txt
+
+/secrets
+/packages

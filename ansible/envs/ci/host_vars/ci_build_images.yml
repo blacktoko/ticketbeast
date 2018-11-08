@@ -1,0 +1,4 @@
+---
+envfiles_templates:
+  - { src: "env.j2", dest: ".env" }
+  - { src: "auth.json.j2", dest: "auth.json" }

@@ -1,0 +1,9 @@
+---
+- name: Development
+  hosts: dev
+  gather_facts: no
+  vars_files:
+    - ../envs/000_cross_env_vars/vars.yml
+    - ../envs/000_cross_env_vars/vault.yml
+  roles:
+    - envfiles

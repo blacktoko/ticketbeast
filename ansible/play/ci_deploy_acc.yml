@@ -1,0 +1,17 @@
+---
+- name: CI Acceptation Deployment
+  hosts: ci_deploy_acc
+  gather_facts: no
+  vars_files:
+    - ../envs/000_cross_env_vars/vars.yml
+    - ../envs/000_cross_env_vars/vault.yml
+  roles:
+    - envfiles
+    - docker_secrets
+    - docker_swarm_tls
+  tasks:
+    - name: Login to Docker Registry
+      docker_login:
+        registry: registry.proserve.nl
+        username: "{{ lookup('env', 'CI_REGISTRY_USER') }}"
+        password: "{{ lookup('env', 'CI_JOB_TOKEN') }}"

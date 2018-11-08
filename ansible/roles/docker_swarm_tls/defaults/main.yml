@@ -1,0 +1,2 @@
+---
+docker_swarm_tls_dir: "/root/.docker/"

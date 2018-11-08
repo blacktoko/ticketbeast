@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+
+  php:
+    image: registry.proserve.nl/${CI_PROJECT_PATH}/php:${IMAGE_TAG}
+    build:
+      context: .
+      target: runtime
+      dockerfile: ./php/Dockerfile
+      args:
+        IMAGE_TAG_PHP: ${IMAGE_TAG_PHP}
+
+  php_builder:
+    image: registry.proserve.nl/${CI_PROJECT_PATH}/php/builder:${IMAGE_TAG}
+    build:
+      context: .
+      target: builder
+      dockerfile: ./php/Dockerfile
+      args:
+        IMAGE_TAG_PHP: ${IMAGE_TAG_PHP}
+
+  nginx:
+    image: registry.proserve.nl/${CI_PROJECT_PATH}/nginx:${IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+      args:
+        IMAGE_TAG_NGINX: ${IMAGE_TAG_NGINX}

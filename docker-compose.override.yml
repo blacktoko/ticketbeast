@@ -1,0 +1,71 @@
+version: '3.7'
+services:
+
+  php:
+    image: registry.proserve.nl/${GITLAB_PROJECT_PATH}/php/builder
+    build:
+      context: .
+      target: builder
+      dockerfile: ./php/Dockerfile
+      args:
+        IMAGE_TAG_PHP: ${IMAGE_TAG_PHP}
+    networks:
+      satis:
+      mysql:
+      server:
+      webgateway:
+    depends_on:
+      - mysql
+    # environment:
+    #   COMPOSER_INSTALL_DEV: "false"
+    volumes:
+      - ./src:/var/www/
+      - ./auth.json:/var/www/auth.json
+      - ./.env-laravel:/var/www/.env
+      #- ./packages:/packages
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+      args:
+        IMAGE_TAG_NGINX: ${IMAGE_TAG_NGINX}
+    networks:
+      webgateway:
+      server:
+    depends_on:
+      - php
+    volumes:
+      - ./src/public:/var/www/public
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${PROXY_NETWORK_NAME:-proxy_webgateway}
+      - traefik.frontend.rule=Host:ticketbeast.test
+
+  mysql:
+    image: mariadb:${IMAGE_TAG_MYSQL}
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      mysql:
+    ports:
+      - ${DB_APP_EXTERNAL_PORT:-3306}:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_APP_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_APP_DATABASE}
+      MYSQL_USER: ${DB_APP_USER}
+      MYSQL_PASSWORD: ${DB_APP_PASSWORD}
+
+volumes:
+  mysql:
+
+networks:
+  server:
+  mysql:
+  webgateway:
+    external:
+      name: ${PROXY_NETWORK_NAME:-proxy_webgateway}
+  satis:
+    external:
+      name: satis
