@@ -1,6 +1,6 @@
 APP_NAME="{{ laravel_app_name }}"
 APP_ENV={{ laravel_app_env }}
-APP_KEY=SECRET
+APP_KEY={{ laravel_app_key }}
 APP_DEBUG={{ laravel_app_debug }}
 APP_HOST={{ laravel_app_host }}
 APP_URL={{ laravel_app_url }}
@@ -39,3 +39,6 @@ PUSHER_APP_CLUSTER=mt1
 
 MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
 MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+STRIPE_KEY={{ stripe_key }}
+STRIPE_SECRET={{ stripe_secret }}

@@ -14,3 +14,6 @@ db_app_database: ticketbeast
 db_app_root_password: secret
 
 docker_secrets_dict: {}
+
+stripe_key: "pk_test_UADJ0vJo0xKO3Pcptfv7J0Q8"
+stripe_secret: "sk_test_VCxgpiZxkjKIgMMRTVunb474"

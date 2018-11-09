@@ -14,6 +14,9 @@ db_app_database: ticketbeast
 db_app_root_password: secret
 db_app_external_port: 3316
 
+stripe_key: "pk_test_UADJ0vJo0xKO3Pcptfv7J0Q8"
+stripe_secret: "sk_test_VCxgpiZxkjKIgMMRTVunb474"
+
 envfiles_templates:
   - { src: "auth.json.j2", dest: "auth.json" }
   - { src: "env.j2", dest: ".env" }
