@@ -30,14 +30,9 @@ class ConcertOrdersController extends Controller
         ]);
 
         try {
-            // Find some tickets
             $reservation = $concert->reserveTickets(request('ticket_quantity'), request('email'));
-
-            // Create an order for those tickets and charge the customer.
             $order = $reservation->complete($this->paymentGateway, request('payment_token'));
-
             return response()->json($order, 201);
-
         } catch (PaymentFailedException $e) {
             $reservation->cancel();
             return response()->json([], 422);

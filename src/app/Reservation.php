@@ -5,6 +5,7 @@ namespace App;
 class Reservation
 {
     private $tickets;
+    private $email;
 
     public function __construct($tickets, $email)
     {
@@ -17,19 +18,20 @@ class Reservation
         return $this->tickets->sum('price');
     }
 
-    public function email()
-    {
-        return $this->email;
-    }
-
     public function tickets()
     {
         return $this->tickets;
     }
 
-    public function complete($paymentGateway, $paymenToken)
+    public function email()
     {
-        $paymentGateway->charge($this->totalCost(), $paymenToken);
+        return $this->email;
+    }
+
+    public function complete($paymentGateway, $paymentToken)
+    {
+        $paymentGateway->charge($this->totalCost(), $paymentToken);
+
         return Order::forTickets($this->tickets(), $this->email(), $this->totalCost());
     }
 

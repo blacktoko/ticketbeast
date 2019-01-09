@@ -1,8 +1,8 @@
 <?php
 
 use App\Order;
-use App\Concert;
 use App\Ticket;
+use App\Concert;
 use App\Reservation;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

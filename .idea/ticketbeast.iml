@@ -9,6 +9,9 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/doctrine/inflector" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/doctrine/instantiator" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/fzaninotto/faker" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/hamcrest/hamcrest-php" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/jakub-onderka/php-console-color" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/jakub-onderka/php-console-highlighter" />
@@ -34,6 +37,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpunit/php-token-stream" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpunit/phpunit" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpunit/phpunit-mock-objects" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/psr/http-message" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/ramsey/uuid" />
@@ -57,6 +61,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/finder" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/http-foundation" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/http-kernel" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-ctype" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-mbstring" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-php56" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-util" />
